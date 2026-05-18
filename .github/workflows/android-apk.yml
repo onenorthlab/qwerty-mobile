@@ -172,12 +172,16 @@ jobs:
             adb install -r apk-artifact/app-release.apk
             $HOME/.maestro/bin/maestro --version
             $HOME/.maestro/bin/maestro test .maestro/flows/02-typing-smoke.yaml --debug-output /tmp/maestro-debug
+            ls -laR /tmp/maestro-debug 2>/dev/null || true
+            ls -laR $HOME/.maestro/tests 2>/dev/null || true
 
-      - name: Upload Maestro debug artifacts on failure
-        if: failure()
+      - name: Upload Maestro debug output
+        if: always()
         uses: actions/upload-artifact@v5
         with:
-          name: maestro-debug
-          path: /tmp/maestro-debug
-          if-no-files-found: ignore
-          retention-days: 7
+          name: maestro-debug-run-${{ github.run_id }}
+          path: |
+            /tmp/maestro-debug/**
+            /home/runner/.maestro/tests/**
+          if-no-files-found: warn
+          retention-days: 14
