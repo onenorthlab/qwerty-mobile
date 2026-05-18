@@ -127,3 +127,57 @@ jobs:
           name: android-apk-release
           path: |
             android/app/build/outputs/apk/release/*.apk
+
+  smoke-test:
+    name: Maestro smoke on emulator
+    needs: build-apk
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Enable KVM group perms
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Download APK artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: android-apk-release
+          path: apk-artifact
+
+      - name: Install Maestro CLI
+        run: |
+          curl -Ls "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+
+      - name: Boot emulator + install APK + run smoke
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 31
+          target: default
+          arch: x86_64
+          profile: pixel_6
+          ram-size: 4096M
+          heap-size: 1024M
+          disable-animations: true
+          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -no-boot-anim -camera-back none -camera-front none
+          script: |
+            ls -la apk-artifact/
+            adb wait-for-device
+            adb shell input keyevent 82 || true
+            adb install -r apk-artifact/app-release.apk
+            $HOME/.maestro/bin/maestro --version
+            $HOME/.maestro/bin/maestro test .maestro/flows/02-typing-smoke.yaml --debug-output /tmp/maestro-debug
+
+      - name: Upload Maestro debug artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v5
+        with:
+          name: maestro-debug
+          path: /tmp/maestro-debug
+          if-no-files-found: ignore
+          retention-days: 7

@@ -1,11 +1,9 @@
-appId: com.onern.starter.dev
-name: "Typing Smoke — listen-and-type three words"
+appId: com.onern.starter
+name: "Typing Smoke — full CET4 chapter to result screen"
 ---
 - launchApp:
     clearState: true
 
-# Auth flow: tap dev-skip only if FEATURE_AUTH is on (login screen visible).
-# When FEATURE_AUTH=false the home tab renders directly.
 - runFlow:
     when:
       visible:
@@ -17,7 +15,7 @@ name: "Typing Smoke — listen-and-type three words"
 - extendedWaitUntil:
     visible:
       id: "home-screen"
-    timeout: 8000
+    timeout: 12000
 
 - assertVisible:
     id: "dictionary-picker"
@@ -28,33 +26,94 @@ name: "Typing Smoke — listen-and-type three words"
 - extendedWaitUntil:
     visible:
       id: "typing-screen"
-    timeout: 5000
+    timeout: 8000
 
 - assertVisible:
     id: "typing-input"
 
-# Word 1: cancel
 - tapOn:
     id: "typing-input"
+- eraseText
 - inputText: "cancel"
-
 - extendedWaitUntil:
-    visible: "explosive"
-    timeout: 4000
+    visible: "2 / 10"
+    timeout: 6000
 
-# Word 2: explosive
 - tapOn:
     id: "typing-input"
+- eraseText
 - inputText: "explosive"
-
 - extendedWaitUntil:
-    visible: "numerous"
-    timeout: 4000
+    visible: "3 / 10"
+    timeout: 6000
 
-# Word 3: numerous — after this, progress text must show ≥ 4/10
 - tapOn:
     id: "typing-input"
+- eraseText
 - inputText: "numerous"
+- extendedWaitUntil:
+    visible: "4 / 10"
+    timeout: 6000
+
+- tapOn:
+    id: "typing-input"
+- eraseText
+- inputText: "govern"
+- extendedWaitUntil:
+    visible: "5 / 10"
+    timeout: 6000
+
+- tapOn:
+    id: "typing-input"
+- eraseText
+- inputText: "analyse"
+- extendedWaitUntil:
+    visible: "6 / 10"
+    timeout: 6000
+
+- tapOn:
+    id: "typing-input"
+- eraseText
+- inputText: "discourage"
+- extendedWaitUntil:
+    visible: "7 / 10"
+    timeout: 6000
+
+- tapOn:
+    id: "typing-input"
+- eraseText
+- inputText: "resemble"
+- extendedWaitUntil:
+    visible: "8 / 10"
+    timeout: 6000
+
+- tapOn:
+    id: "typing-input"
+- eraseText
+- inputText: "remote"
+- extendedWaitUntil:
+    visible: "9 / 10"
+    timeout: 6000
+
+- tapOn:
+    id: "typing-input"
+- eraseText
+- inputText: "salary"
+- extendedWaitUntil:
+    visible: "10 / 10"
+    timeout: 6000
+
+- tapOn:
+    id: "typing-input"
+- eraseText
+- inputText: "pollution"
+
+- extendedWaitUntil:
+    visible:
+      id: "result-screen"
+    timeout: 10000
 
 - assertVisible:
-    id: "typing-screen"
+    id: "result-restart"
+- assertVisible:
+    id: "result-exit"

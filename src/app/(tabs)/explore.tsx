@@ -22,7 +22,7 @@ export default function PracticeScreen() {
     'accent',
   ] as const);
 
-  const { currentDictId, currentChapter, setChapter } = useDictionarySelection();
+  const { currentDictId, currentChapter } = useDictionarySelection();
   const [sessionId, setSessionId] = useState(0);
   const dict = findDictionary(currentDictId);
   const { recordSession } = useWordRecordsActions();
@@ -107,10 +107,6 @@ export default function PracticeScreen() {
                 };
               }),
             });
-            const nextChapter = currentChapter + 1;
-            if (nextChapter < chapterCount) {
-              setChapter(nextChapter);
-            }
           }}
         />
       </View>

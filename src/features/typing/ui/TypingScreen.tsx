@@ -60,6 +60,10 @@ export function TypingScreen({ words, accent = 'us', onExit, onComplete }: Typin
   }, [state.hasWrong]);
 
   useEffect(() => {
+    setTextValue(state.input);
+  }, [state.input]);
+
+  useEffect(() => {
     if (isFinished(state) && !completedRef.current) {
       completedRef.current = true;
       const mistakes = state.words
@@ -106,7 +110,7 @@ export function TypingScreen({ words, accent = 'us', onExit, onComplete }: Typin
   return (
     <View testID="typing-screen" className="flex-1 px-6 py-8 gap-6">
       <View className="flex-row items-center justify-between">
-        <Text style={{ color: muted }} className="text-sm">
+        <Text testID="typing-progress" style={{ color: muted }} className="text-sm">
           {progressText}
         </Text>
         <Pressable
