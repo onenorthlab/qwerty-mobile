@@ -33,7 +33,7 @@ describe('SettingsStore', () => {
     const state = useSettingsStore.getState();
     expect(state.theme).toBe('system');
     expect(state.language).toBe('system');
-    expect(state.notificationsEnabled).toBe(true);
+    expect(state.notificationsEnabled).toBe(false);
   });
 
   it('setTheme updates the theme', () => {
@@ -84,13 +84,13 @@ describe('SettingsStore', () => {
   it('resetSettings restores all defaults', () => {
     useSettingsStore.getState().setTheme('dark');
     useSettingsStore.getState().setLanguage('zh');
-    useSettingsStore.getState().setNotificationsEnabled(false);
+    useSettingsStore.getState().setNotificationsEnabled(true);
 
     useSettingsStore.getState().resetSettings();
 
     const state = useSettingsStore.getState();
     expect(state.theme).toBe('system');
     expect(state.language).toBe('system');
-    expect(state.notificationsEnabled).toBe(true);
+    expect(state.notificationsEnabled).toBe(false);
   });
 });
