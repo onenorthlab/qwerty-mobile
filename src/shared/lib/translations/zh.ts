@@ -121,4 +121,52 @@ export default {
   auth_signup_success_title: '请查收邮件',
   auth_signup_success_msg: '我们已向你发送确认链接，请验证邮箱后继续。',
   auth_placeholder: '认证页面将在接入 Supabase 后实现。',
+
+  // Tabs (Phase 2)
+  tab_dict: '词库',
+  tab_practice: '练习',
+  tab_progress: '错题',
+
+  // Home
+  home_title: '选一个词库',
+  home_subtitle: '听写主打——听发音、用键盘拼出来。',
+  home_start_practice: '开始练习',
+  home_footer_tip: '提示：点喇叭可以重听这个词。',
+
+  // Dictionary picker
+  dict_picker_label: '可用词库',
+  dict_word_count_suffix: '词',
+
+  // Practice screen wrapper
+  practice_no_dict: '还没选词库。',
+  practice_go_home: '回到词库列表',
+  practice_chapter_progress: '第 {{current}} / {{total}} 章',
+  practice_session_length: '本轮 {{count}} 个词',
+
+  // Typing
+  typing_empty: '这一章是空的，换一个试试。',
+  typing_back: '退出练习',
+  typing_replay: '重听',
+  typing_hint_translation: '中文释义',
+  typing_input_hint: '听到什么就打什么，全对自动进入下一个。',
+  typing_wrong_retry: '错了——重来。',
+
+  // Result
+  result_title: '本轮完成',
+  result_subtitle: '完成了 {{count}} 个词',
+  result_wpm: 'WPM',
+  result_accuracy: '正确率',
+  result_time: '用时',
+  result_mistakes_header: '{{count}} 个词有错',
+  result_mistakes_attempts: '次错误',
+  result_no_mistakes: '一气呵成——表现完美！',
+  result_restart: '再练一轮',
+  result_back: '回到词库列表',
+
+  // Errorbook
+  errorbook_title: '错题本',
+  errorbook_subtitle: '最近拼错的词汇。',
+  errorbook_empty_title: '还没有错题',
+  errorbook_empty_desc: '练几轮，错过的词会自动出现在这里。',
+  errorbook_chapter: '第 {{chapter}} 章',
 } as const;

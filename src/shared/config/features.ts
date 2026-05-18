@@ -30,6 +30,10 @@ export const FEATURES = {
   FEEDBACK:
     process.env.EXPO_PUBLIC_FEATURE_FEEDBACK !== 'false' &&
     process.env.EXPO_PUBLIC_FEATURE_FEEDBACK !== '0',
+  /** Listen-and-type practice loop (Phase 2 MVP core) */
+  TYPING:
+    process.env.EXPO_PUBLIC_FEATURE_TYPING !== 'false' &&
+    process.env.EXPO_PUBLIC_FEATURE_TYPING !== '0',
 } as const;
 
 export type FeatureKey = keyof typeof FEATURES;
