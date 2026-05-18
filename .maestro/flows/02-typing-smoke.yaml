@@ -1,0 +1,60 @@
+appId: com.onern.starter.dev
+name: "Typing Smoke — listen-and-type three words"
+---
+- launchApp:
+    clearState: true
+
+# Auth flow: tap dev-skip only if FEATURE_AUTH is on (login screen visible).
+# When FEATURE_AUTH=false the home tab renders directly.
+- runFlow:
+    when:
+      visible:
+        id: "login-skip-dev"
+    commands:
+      - tapOn:
+          id: "login-skip-dev"
+
+- extendedWaitUntil:
+    visible:
+      id: "home-screen"
+    timeout: 8000
+
+- assertVisible:
+    id: "dictionary-picker"
+
+- tapOn:
+    id: "dict-item-CET4_T"
+
+- extendedWaitUntil:
+    visible:
+      id: "typing-screen"
+    timeout: 5000
+
+- assertVisible:
+    id: "typing-input"
+
+# Word 1: cancel
+- tapOn:
+    id: "typing-input"
+- inputText: "cancel"
+
+- extendedWaitUntil:
+    visible: "explosive"
+    timeout: 4000
+
+# Word 2: explosive
+- tapOn:
+    id: "typing-input"
+- inputText: "explosive"
+
+- extendedWaitUntil:
+    visible: "numerous"
+    timeout: 4000
+
+# Word 3: numerous — after this, progress text must show ≥ 4/10
+- tapOn:
+    id: "typing-input"
+- inputText: "numerous"
+
+- assertVisible:
+    id: "typing-screen"
