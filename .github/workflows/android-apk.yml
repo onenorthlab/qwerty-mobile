@@ -166,11 +166,12 @@ jobs:
           disable-animations: true
           emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -no-boot-anim -camera-back none -camera-front none
           script: |
-            set -euxo pipefail
+            set -eux
             ls -la apk-artifact/
             APK_FILE=$(ls apk-artifact/*.apk | head -n1)
             echo "Installing $APK_FILE"
             adb wait-for-device
+            adb shell input keyevent 82 || true
             adb install -r "$APK_FILE"
             export PATH="$HOME/.maestro/bin:$PATH"
             maestro --version
