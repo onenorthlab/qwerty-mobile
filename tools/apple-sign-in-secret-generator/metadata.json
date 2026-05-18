@@ -1,0 +1,5 @@
+{
+  "name": "Apple Sign-In Secret Generator",
+  "description": "A wizard tool to help developers generate the JWT secret key required for Apple Sign-In authentication.",
+  "requestFramePermissions": []
+}

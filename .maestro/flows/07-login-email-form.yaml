@@ -1,0 +1,40 @@
+appId: com.onern.starter.dev
+name: "Login — Email Form Interaction"
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: "login-screen"
+    timeout: 10000
+
+# Type email
+- tapOn:
+    id: "login-email-input"
+- inputText: "test@example.com"
+
+# Type password
+- tapOn:
+    id: "login-password-input"
+- inputText: "password123"
+
+# Tap submit — may show an error alert, app should not crash
+- tapOn:
+    id: "login-submit-button"
+
+# Dismiss any alert that appears
+- tapOn:
+    text: "OK"
+    optional: true
+
+# Verify the screen is still visible
+- extendedWaitUntil:
+    visible:
+      id: "login-screen"
+    timeout: 5000
+
+# Toggle to sign-up mode
+- tapOn:
+    id: "login-toggle-mode"
+- assertVisible:
+    id: "login-submit-button"

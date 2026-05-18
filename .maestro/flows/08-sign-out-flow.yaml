@@ -1,0 +1,33 @@
+appId: com.onern.starter.dev
+name: "Sign Out Flow (Unauthenticated)"
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: "login-skip-dev"
+    timeout: 10000
+- tapOn:
+    id: "login-skip-dev"
+- extendedWaitUntil:
+    visible:
+      id: "home-screen"
+    timeout: 5000
+- tapOn: "Settings"
+- extendedWaitUntil:
+    visible:
+      id: "settings-screen"
+    timeout: 3000
+
+# User is not signed in (dev skip = no session)
+- assertVisible: "Not signed in"
+- assertVisible:
+    id: "settings-sign-in"
+
+# Tap Sign In to navigate back to login
+- tapOn:
+    id: "settings-sign-in"
+- extendedWaitUntil:
+    visible:
+      id: "login-screen"
+    timeout: 5000

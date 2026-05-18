@@ -1,0 +1,19 @@
+appId: com.onern.starter.dev
+name: "Launch → Login Screen"
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: "login-screen"
+    timeout: 10000
+- assertVisible:
+    id: "login-email-input"
+- assertVisible:
+    id: "login-password-input"
+- assertVisible:
+    id: "login-submit-button"
+- assertVisible:
+    id: "login-apple-button"
+- assertVisible:
+    id: "login-skip-dev"

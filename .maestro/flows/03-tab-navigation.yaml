@@ -1,0 +1,36 @@
+appId: com.onern.starter.dev
+name: "Tab Navigation"
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: "login-skip-dev"
+    timeout: 10000
+- tapOn:
+    id: "login-skip-dev"
+- extendedWaitUntil:
+    visible:
+      id: "home-screen"
+    timeout: 5000
+
+# Navigate to Explore tab
+- tapOn: "Explore"
+- extendedWaitUntil:
+    visible:
+      id: "explore-screen"
+    timeout: 3000
+
+# Navigate to Settings tab
+- tapOn: "Settings"
+- extendedWaitUntil:
+    visible:
+      id: "settings-screen"
+    timeout: 3000
+
+# Return to Home tab
+- tapOn: "Home"
+- extendedWaitUntil:
+    visible:
+      id: "home-screen"
+    timeout: 3000

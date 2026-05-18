@@ -1,0 +1,38 @@
+appId: com.onern.starter.dev
+name: "Settings — Theme Toggle"
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: "login-skip-dev"
+    timeout: 10000
+- tapOn:
+    id: "login-skip-dev"
+- extendedWaitUntil:
+    visible:
+      id: "home-screen"
+    timeout: 5000
+- tapOn: "Settings"
+- extendedWaitUntil:
+    visible:
+      id: "settings-screen"
+    timeout: 3000
+
+# Light theme
+- tapOn:
+    id: "settings-theme-light"
+- assertVisible:
+    id: "settings-screen"
+
+# Dark theme
+- tapOn:
+    id: "settings-theme-dark"
+- assertVisible:
+    id: "settings-screen"
+
+# System theme
+- tapOn:
+    id: "settings-theme-system"
+- assertVisible:
+    id: "settings-screen"

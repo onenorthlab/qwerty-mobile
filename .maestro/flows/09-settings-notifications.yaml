@@ -1,0 +1,72 @@
+appId: com.onern.starter.dev
+name: "Settings — Notification Toggles"
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: "login-skip-dev"
+    timeout: 10000
+- tapOn:
+    id: "login-skip-dev"
+- extendedWaitUntil:
+    visible:
+      id: "home-screen"
+    timeout: 5000
+- tapOn: "Settings"
+- extendedWaitUntil:
+    visible:
+      id: "settings-screen"
+    timeout: 3000
+
+# Master notification toggle is ON by default — sub-toggles should be visible
+- assertVisible:
+    id: "settings-notifications-toggle"
+- assertVisible:
+    id: "settings-notify-system"
+- assertVisible:
+    id: "settings-notify-marketing"
+- assertVisible:
+    id: "settings-notify-reminder"
+
+# Toggle daily reminder ON → time picker should appear
+- tapOn:
+    id: "settings-notify-reminder"
+- assertVisible:
+    id: "settings-reminder-morning"
+- assertVisible:
+    id: "settings-reminder-noon"
+- assertVisible:
+    id: "settings-reminder-evening"
+
+# Select evening time
+- tapOn:
+    id: "settings-reminder-evening"
+
+# Toggle daily reminder OFF → time picker should disappear
+- tapOn:
+    id: "settings-notify-reminder"
+- assertNotVisible:
+    id: "settings-reminder-morning"
+
+# Toggle marketing OFF
+- tapOn:
+    id: "settings-notify-marketing"
+
+# Turn master toggle OFF — sub-toggles should disappear
+- tapOn:
+    id: "settings-notifications-toggle"
+- assertNotVisible:
+    id: "settings-notify-system"
+- assertNotVisible:
+    id: "settings-notify-marketing"
+
+# Turn master toggle back ON — sub-toggles reappear
+- tapOn:
+    id: "settings-notifications-toggle"
+- assertVisible:
+    id: "settings-notify-system"
+- assertVisible:
+    id: "settings-notify-marketing"
+- assertVisible:
+    id: "settings-notify-reminder"

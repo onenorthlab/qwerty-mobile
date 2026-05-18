@@ -1,0 +1,36 @@
+appId: com.onern.starter.dev
+name: "Settings — Reset"
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: "login-skip-dev"
+    timeout: 10000
+- tapOn:
+    id: "login-skip-dev"
+- extendedWaitUntil:
+    visible:
+      id: "home-screen"
+    timeout: 5000
+- tapOn: "Settings"
+- extendedWaitUntil:
+    visible:
+      id: "settings-screen"
+    timeout: 3000
+
+# Change theme to dark
+- tapOn:
+    id: "settings-theme-dark"
+
+# Change language to Chinese
+- tapOn:
+    id: "settings-lang-zh"
+- assertVisible: "设置"
+
+# Reset all settings
+- tapOn:
+    id: "settings-reset"
+- extendedWaitUntil:
+    visible: "Settings"
+    timeout: 3000

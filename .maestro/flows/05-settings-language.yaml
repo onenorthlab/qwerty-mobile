@@ -1,0 +1,30 @@
+appId: com.onern.starter.dev
+name: "Settings — Language Switch"
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: "login-skip-dev"
+    timeout: 10000
+- tapOn:
+    id: "login-skip-dev"
+- extendedWaitUntil:
+    visible:
+      id: "home-screen"
+    timeout: 5000
+- tapOn: "Settings"
+- extendedWaitUntil:
+    visible:
+      id: "settings-screen"
+    timeout: 3000
+
+# Switch to Chinese
+- tapOn:
+    id: "settings-lang-zh"
+- assertVisible: "设置"
+
+# Switch back to English
+- tapOn:
+    id: "settings-lang-en"
+- assertVisible: "Settings"

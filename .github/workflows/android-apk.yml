@@ -1,0 +1,123 @@
+name: Android APK (Local Build)
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - Release
+      - release
+
+permissions:
+  contents: read
+
+concurrency:
+  group: android-apk-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-apk:
+    name: Prebuild + assembleRelease
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    # Skip workflow on the template repository itself.
+    # Repositories generated from this template have is_template=false and will run.
+    # if: ${{ !github.event.repository.is_template }}
+    env:
+      CI: "1"
+      APP_ENV: production
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Cache Gradle User Home
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-jdk17-${{ hashFiles('package-lock.json', 'app.config.ts') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-jdk17-
+            ${{ runner.os }}-gradle-
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Expo prebuild (Android)
+        run: npx expo prebuild --platform android --non-interactive
+
+      - name: Detect signing config
+        id: signing
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          has_base64=false
+          has_store_pass=false
+          has_alias=false
+          has_key_pass=false
+
+          [ -n "${ANDROID_KEYSTORE_BASE64}" ] && has_base64=true
+          [ -n "${ANDROID_KEYSTORE_PASSWORD}" ] && has_store_pass=true
+          [ -n "${ANDROID_KEY_ALIAS}" ] && has_alias=true
+          [ -n "${ANDROID_KEY_PASSWORD}" ] && has_key_pass=true
+
+          if $has_base64 && $has_store_pass && $has_alias && $has_key_pass; then
+            keystore_path="${RUNNER_TEMP}/release.keystore"
+            echo "${ANDROID_KEYSTORE_BASE64}" | base64 --decode > "${keystore_path}"
+            echo "enabled=true" >> "${GITHUB_OUTPUT}"
+            echo "keystore_path=${keystore_path}" >> "${GITHUB_OUTPUT}"
+            echo "Signing config detected. Build will produce a signed APK."
+          elif ! $has_base64 && ! $has_store_pass && ! $has_alias && ! $has_key_pass; then
+            echo "enabled=false" >> "${GITHUB_OUTPUT}"
+            echo "No signing secrets found. Build will produce an unsigned/default release APK."
+          else
+            echo "Partial signing secrets detected. Please set all of these secrets or none:"
+            echo "ANDROID_KEYSTORE_BASE64, ANDROID_KEYSTORE_PASSWORD, ANDROID_KEY_ALIAS, ANDROID_KEY_PASSWORD"
+            exit 1
+          fi
+
+      - name: Build signed release APK
+        if: ${{ steps.signing.outputs.enabled == 'true' }}
+        working-directory: android
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          KEYSTORE_PATH: ${{ steps.signing.outputs.keystore_path }}
+        run: |
+          ./gradlew assembleRelease --no-daemon --parallel --build-cache \
+            -Pandroid.injected.signing.store.file="${KEYSTORE_PATH}" \
+            -Pandroid.injected.signing.store.password="${ANDROID_KEYSTORE_PASSWORD}" \
+            -Pandroid.injected.signing.key.alias="${ANDROID_KEY_ALIAS}" \
+            -Pandroid.injected.signing.key.password="${ANDROID_KEY_PASSWORD}"
+
+      - name: Build unsigned/default release APK
+        if: ${{ steps.signing.outputs.enabled != 'true' }}
+        working-directory: android
+        run: ./gradlew assembleRelease --no-daemon --parallel --build-cache
+
+      - name: Upload APK artifacts
+        uses: actions/upload-artifact@v5
+        with:
+          name: android-apk-release
+          path: |
+            android/app/build/outputs/apk/release/*.apk
