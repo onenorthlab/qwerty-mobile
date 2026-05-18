@@ -270,3 +270,18 @@ npx tsc --noEmit
 | [docs/ui.md](./docs/ui.md) | 主题系统设计与颜色规范 |
 | [docs/push.md](./docs/push.md) | OneSignal + expo-notifications 接入教程 |
 | [docs/iap.md](./docs/iap.md) | RevenueCat 内购接入教程（含 App Store Connect 配置） |
+
+---
+
+## Legacy Web Reference (`legacy-web/`)
+
+本仓库根目录的 [`legacy-web/`](./legacy-web/) 子目录是 [qwerty-learner](https://github.com/RealKai42/qwerty-learner)（原作者 [RealKai42](https://github.com/RealKai42)）网页版的完整代码与 git 历史归档，通过 `git subtree` 导入。
+
+**用途与边界**：
+
+- **只作功能参考**：本目录用于设计 qwerty-mobile 端口时查阅老 Web 版的产品行为、UI 交互、数据形态、词库结构。
+- **本仓库主项目（根目录 `src/` 等）不会 `import` 此目录下任何文件**。所有功能在主项目里独立实现（clean-room rewrite）。
+- **协议隔离**：`legacy-web/` 内代码继续遵循其原始 [GPL-3.0 协议](./legacy-web/LICENSE)；本仓库主项目代码（`src/` 等）独立实现、不衍生于上述代码，**不继承 GPL 协议**。
+- **不修改**：`legacy-web/` 内文件不应被本仓库后续提交修改；如需 upstream 同步，使用 `git subtree pull` 而非散点编辑。
+
+**词库与音频资产**：[`legacy-web/public/dicts/`](./legacy-web/public/dicts/) 下的 380 个词库 JSON 与 [`legacy-web/public/sounds/`](./legacy-web/public/sounds/) 下的音效文件，**其原始版权归各自来源所有**（CET 词表、公有领域词表、第三方贡献等不一而足）；在端口到 mobile 主项目使用前，每个文件的来源与许可证将单独审计。
