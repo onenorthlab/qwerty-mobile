@@ -121,4 +121,52 @@ export default {
   auth_signup_success_title: 'Check your email',
   auth_signup_success_msg: 'We sent you a confirmation link. Please verify your email to continue.',
   auth_placeholder: 'Auth screens will be implemented with Supabase.',
+
+  // Tabs (Phase 2)
+  tab_dict: 'Dictionaries',
+  tab_practice: 'Practice',
+  tab_progress: 'Progress',
+
+  // Home
+  home_title: 'Pick a dictionary',
+  home_subtitle: 'Listen and type — practice spelling by ear.',
+  home_start_practice: 'Start practicing',
+  home_footer_tip: 'Tip: tap the speaker icon to replay the word.',
+
+  // Dictionary picker
+  dict_picker_label: 'Available dictionaries',
+  dict_word_count_suffix: 'words',
+
+  // Practice screen wrapper
+  practice_no_dict: 'No dictionary selected yet.',
+  practice_go_home: 'Back to dictionaries',
+  practice_chapter_progress: 'Chapter {{current}} of {{total}}',
+  practice_session_length: '{{count}} words this round',
+
+  // Typing
+  typing_empty: 'This chapter is empty. Try another one.',
+  typing_back: 'Exit practice',
+  typing_replay: 'Replay',
+  typing_hint_translation: 'Translation',
+  typing_input_hint: 'Type what you hear, then it will auto-advance.',
+  typing_wrong_retry: 'Wrong — please try again.',
+
+  // Result
+  result_title: 'Round complete',
+  result_subtitle: '{{count}} words finished',
+  result_wpm: 'WPM',
+  result_accuracy: 'Accuracy',
+  result_time: 'Time',
+  result_mistakes_header: '{{count}} word(s) with mistakes',
+  result_mistakes_attempts: 'attempts',
+  result_no_mistakes: 'Flawless run — well done!',
+  result_restart: 'Practice again',
+  result_back: 'Back to dictionaries',
+
+  // Errorbook
+  errorbook_title: 'Mistakes',
+  errorbook_subtitle: 'Words you misspelled most recently.',
+  errorbook_empty_title: 'No mistakes yet',
+  errorbook_empty_desc: 'Practice a round to start tracking what you got wrong.',
+  errorbook_chapter: 'Chapter {{chapter}}',
 } as const;

@@ -1,9 +1,10 @@
 import { Redirect, Tabs } from 'expo-router';
-import { Home, Compass, Settings } from 'lucide-react-native';
+import { BookMarked, Headphones, BookOpen, Settings } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import { useThemeColor } from 'heroui-native';
 import { useAuth } from '../../providers/AuthProvider';
 import { AuthTransitionScreen } from '../../shared/ui/AuthTransitionScreen';
+import { FEATURES } from '../../shared/config/features';
 
 export default function TabLayout() {
   const { t } = useTranslation();
@@ -14,12 +15,11 @@ export default function TabLayout() {
     'border',
   ] as const);
 
-  if (isLoading || isAuthProcessing) {
+  if (FEATURES.AUTH && (isLoading || isAuthProcessing)) {
     return <AuthTransitionScreen />;
   }
 
-  // Prevent unauthenticated users from entering tabs directly.
-  if (!session && !__DEV__) {
+  if (FEATURES.AUTH && !session && !__DEV__) {
     return <Redirect href="/(auth)/login" />;
   }
 
@@ -42,18 +42,27 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: t('tab_home'),
+          title: t('tab_dict'),
           tabBarIcon: ({ color, size }) => (
-            <Home size={size} color={color} strokeWidth={1.5} />
+            <BookMarked size={size} color={color} strokeWidth={1.5} />
           ),
         }}
       />
       <Tabs.Screen
         name="explore"
         options={{
-          title: t('tab_explore'),
+          title: t('tab_practice'),
           tabBarIcon: ({ color, size }) => (
-            <Compass size={size} color={color} strokeWidth={1.5} />
+            <Headphones size={size} color={color} strokeWidth={1.5} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="progress"
+        options={{
+          title: t('tab_progress'),
+          tabBarIcon: ({ color, size }) => (
+            <BookOpen size={size} color={color} strokeWidth={1.5} />
           ),
         }}
       />
