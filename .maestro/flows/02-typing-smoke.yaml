@@ -20,6 +20,8 @@ name: "Typing Smoke — full CET4 chapter to result screen"
 - assertVisible:
     id: "dictionary-picker"
 
+- takeScreenshot: 01-home-dict-picker
+
 - tapOn:
     id: "dict-item-CET4_T"
 
@@ -30,6 +32,8 @@ name: "Typing Smoke — full CET4 chapter to result screen"
 
 - assertVisible:
     id: "typing-input"
+
+- takeScreenshot: 02-typing-screen-word1
 
 - tapOn:
     id: "typing-input"
@@ -70,6 +74,8 @@ name: "Typing Smoke — full CET4 chapter to result screen"
 - extendedWaitUntil:
     visible: "6 / 10"
     timeout: 6000
+
+- takeScreenshot: 03-mid-progress-6of10
 
 - tapOn:
     id: "typing-input"
@@ -112,6 +118,8 @@ name: "Typing Smoke — full CET4 chapter to result screen"
     visible:
       id: "result-screen"
     timeout: 10000
+
+- takeScreenshot: 04-result-screen
 
 - assertVisible:
     id: "result-restart"
